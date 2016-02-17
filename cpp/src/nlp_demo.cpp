@@ -6,6 +6,7 @@
 #include "meta/logging/logger.h"
 #include "meta/util/shim.h"
 #include "nlp_demo.h"
+#include "html_tree_visitor.h"
 
 using namespace meta;
 
@@ -94,8 +95,8 @@ Json::Value nlp_demo::json_sentence(const meta::sequence::sequence& seq,
     }
     obj["tokenized"] = tokenized;
     obj["tagged"] = tagged;
-    std::stringstream ss;
-    ss << tree;
-    obj["tree"] = ss.str();
+    meta::parser::html_tree_visitor visitor;
+    tree.visit(visitor);
+    obj["tree"] = visitor.html();
     return obj;
 }
