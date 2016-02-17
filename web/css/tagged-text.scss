@@ -1,0 +1,177 @@
+div.tagged-text ul {
+  padding: 0;
+  position: relative;
+  margin: 0;
+}
+
+div.tagged-text li {
+  float: left;
+  text-align: center;
+  list-style-type: none;
+  position: relative;
+  padding: 0;
+  min-width: 25px;
+  margin: 0 2px;
+}
+
+div.tagged-text li.chunk li {
+  margin: 2px 0;
+  padding: 0 0 0 5px;
+}
+
+div.tagged-text li.chunk li:last-child {
+  padding: 0 5px;
+}
+
+div.tagged-text li.chunk li:only-child {
+  padding: 0 5px;
+}
+
+div.tagged-text li span.tag {
+  border-width: 1px;
+  border-style: solid;
+  padding: 2px 5px;
+  display: inline-block;
+  border-radius: 5px;
+  font-size: 11px;
+}
+
+div.curly-brace {
+  width: 100%;
+  position: relative;
+}
+
+div.brace {
+  border-bottom: 2px solid;
+  margin: -5px 20% 0 20%;
+  width: 10%;
+  height: 10px;
+  float: left;
+}
+
+div.brace:before, div.brace:after {
+  content: "";
+  width: 20%;
+  height: 20px;
+  position: absolute;
+  display: block;
+}
+
+div.brace.right:before {
+  border-bottom: 2px solid;
+  border-bottom-left-radius: 6px;
+  margin-left: -20%;
+  margin-top: -10px;
+}
+
+div.brace.right:after {
+  border-top: 2px solid;
+  border-top-right-radius: 6px;
+  margin-left: 10%;
+  margin-top: 8px;
+}
+
+div.brace.left:before {
+  border-top: 2px solid;
+  border-top-left-radius: 6px;
+  margin-left: -20%;
+  margin-top: 8px;
+}
+
+div.brace.left:after {
+  border-bottom: 2px solid;
+  border-bottom-right-radius: 6px;
+  margin-left: 10%;
+  margin-top: -10px;
+}
+
+/*
+ * Colors taken from brat CoreNLP configuration
+ * see: https://github.com/nlplab/brat/blob/master/configurations/Stanford-CoreNLP/visual.conf
+ */
+$light-grey: #e3e3e3;
+$light-purple: #ccadf6;
+$yellow: #fffda8;
+$blue: #a4bced;
+$brown: #ffe8be;
+$green: #99f48b;
+$violet: #e4cbf6;
+
+@mixin label($color) {
+  span.tag {
+    background: $color;
+    border-color: darken($color, 40%);
+  }
+  li {
+    background: transparentize($color, 0.6);
+  }
+  div.curly-brace {
+    color: darken($color, 40%);
+  }
+  &:hover {
+    span.tag {
+      background: darken($color, 5%);
+      border-color: darken($color, 40%);
+    }
+    li {
+      background: opacify(transparentize($color, 0.6), 0.2);
+    }
+    div.curly-brace {
+      color: darken(darken($color, 40%), 5%);
+    }
+  }
+}
+
+/*
+ * Coordination and Punctuation
+ */
+.label_CC, .label_PUNCT {
+  @include label($light-grey);
+}
+
+/*
+ * Adjectives and adverbs
+ */
+.label_JJ, .label_JJR, .label_JJS, .label_RB, .label_RBR, .label_RBS,
+.label_WRB {
+  @include label($yellow);
+}
+
+/*
+ * Determiners, numbers, pronouns
+ */
+.label_DT, .label_PDT, .label_WDT, .label_CD, .label_PRP, .label_PRPDOLLAR,
+.label_WP, .label_WPDOLLAR {
+  @include label($light-purple);
+}
+
+/*
+ * Nouns
+ */
+.label_NN, .label_NNP, .label_NNPS, .label_NNS {
+  @include label($blue);
+}
+
+/*
+ * Prepositions
+ */
+.label_IN, .label_TO {
+  @include label($brown);
+}
+
+/*
+ * Verbs
+ */
+.label_MD, .label_VB, .label_VBD, .label_VBG, .label_VBN, .label_VBP,
+.label_VBZ {
+  @include label($green);
+}
+
+/*
+ * Miscellaneous
+ */
+.label_EX, .label_FW, .label_LS, .label_POS, .label_RP, .label_SYM,
+.label_UH, .label_DOLLAR
+{
+  @include label($violet);
+}

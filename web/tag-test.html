@@ -8,82 +8,7 @@
     <title>MeTA NLP Demo</title>
     <link href="css/sticky-footer.css" rel="stylesheet">
     <link href="css/dataTables.css" rel="stylesheet">
-
-<style type="text/css">
-
-div.tagged-text ul {
-  padding: 0;
-  position: relative;
-  margin: 0;
-}
-
-div.tagged-text li {
-  float: left;
-  text-align: center;
-  list-style-type: none;
-  position: relative;
-  padding: 0 5px;
-  min-width: 30px;
-  margin: 0;
-}
-
-div.tagged-text li span {
-  border: 1px solid #ccc;
-  padding: 2px 5px;
-  display: inline-block;
-  border-radius: 5px;
-}
-
-div.curly-brace {
-  width: 100%;
-  position: relative;
-}
-
-div.brace {
-  border-bottom: 3px solid;
-  margin: 0 20%;
-  width: 10%;
-  height: 10px;
-  float: left;
-}
-
-div.brace:before, div.brace:after {
-  content: "";
-  width: 20%;
-  height: 20px;
-  position: absolute;
-  display: block;
-}
-
-div.brace.right:before {
-  border-bottom: 3px solid;
-  border-bottom-left-radius: 10px;
-  margin-left: -20%;
-  margin-top: -10px;
-}
-
-div.brace.right:after {
-  border-top: 3px solid;
-  border-top-right-radius: 10px;
-  margin-left: 10%;
-  margin-top: 7px;
-}
-
-div.brace.left:before {
-  border-top: 3px solid;
-  border-top-left-radius: 10px;
-  margin-left: -20%;
-  margin-top: 7px;
-}
-
-div.brace.left:after {
-  border-bottom: 3px solid;
-  border-bottom-right-radius: 10px;
-  margin-left: 10%;
-  margin-top: -10px;
-}
-
-</style>
+    <link href="css/tagged-text.css" rel="stylesheet">
   </head>
   <body>
     <div class="container-fluid">
@@ -93,10 +18,10 @@ div.brace.left:after {
         </h1>
       </div>
     </div>
-    <div class="container-fluid" id="analyzerOutput">
+    <div class="container-fluid">
       <div class="tagged-text">
         <ul>
-          <li>
+          <li class="chunk label_DT">
             <span class="tag">DT</span>
             <div class="curly-brace">
               <div class="left brace"></div>
@@ -106,7 +31,7 @@ div.brace.left:after {
               <li>The</li>
             </ul>
           </li>
-          <li>
+          <li class="chunk label_NNP">
             <span class="tag">ORG</span>
             <div class="curly-brace">
               <div class="left brace"></div>
@@ -117,54 +42,54 @@ div.brace.left:after {
               <li>Cubs</li>
             </ul>
           </li>
-          <li>
+          <li class="chunk label_VBD">
             <span class="tag">VBD</span>
             <div class="curly-brace">
               <div class="left brace"></div>
               <div class="right brace"></div>
             </div>
             <ul>
-              <li>won</li>
+              <li><span class="word">won</span></li>
             </ul>
           </li>
-          <li>
+          <li class="chunk label_DT">
             <span class="tag">DT</span>
             <div class="curly-brace">
               <div class="left brace"></div>
               <div class="right brace"></div>
             </div>
             <ul>
-              <li>the</li>
+              <li><span class="word">the</span></li>
             </ul>
           </li>
-          <li>
+          <li class="chunk label_NNP">
             <span class="tag">NNP</span>
             <div class="curly-brace">
               <div class="left brace"></div>
               <div class="right brace"></div>
             </div>
             <ul>
-              <li>World</li>
+              <li><span class="word">World</span></li>
             </ul>
           </li>
-          <li>
+          <li class="chunk label_NNP">
             <span class="tag">NNP</span>
             <div class="curly-brace">
               <div class="left brace"></div>
               <div class="right brace"></div>
             </div>
             <ul>
-              <li>Series</li>
+              <li><span class="word">Series</span></li>
             </ul>
           </li>
-          <li>
+          <li class="chunk label_PUNCT">
             <span class="tag">.</span>
             <div class="curly-brace">
               <div class="left brace"></div>
               <div class="right brace"></div>
             </div>
             <ul>
-              <li>.</li>
+              <li><span class="word">.</span></li>
             </ul>
           </li>
         </ul>
