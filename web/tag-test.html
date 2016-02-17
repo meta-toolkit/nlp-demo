@@ -1,0 +1,187 @@
+<DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <title>MeTA NLP Demo</title>
+    <link href="css/sticky-footer.css" rel="stylesheet">
+    <link href="css/dataTables.css" rel="stylesheet">
+
+<style type="text/css">
+
+div.tagged-text ul {
+  padding: 0;
+  position: relative;
+  margin: 0;
+}
+
+div.tagged-text li {
+  float: left;
+  text-align: center;
+  list-style-type: none;
+  position: relative;
+  padding: 0 5px;
+  min-width: 30px;
+  margin: 0;
+}
+
+div.tagged-text li span {
+  border: 1px solid #ccc;
+  padding: 2px 5px;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+div.curly-brace {
+  width: 100%;
+  position: relative;
+}
+
+div.brace {
+  border-bottom: 3px solid;
+  margin: 0 20%;
+  width: 10%;
+  height: 10px;
+  float: left;
+}
+
+div.brace:before, div.brace:after {
+  content: "";
+  width: 20%;
+  height: 20px;
+  position: absolute;
+  display: block;
+}
+
+div.brace.right:before {
+  border-bottom: 3px solid;
+  border-bottom-left-radius: 10px;
+  margin-left: -20%;
+  margin-top: -10px;
+}
+
+div.brace.right:after {
+  border-top: 3px solid;
+  border-top-right-radius: 10px;
+  margin-left: 10%;
+  margin-top: 7px;
+}
+
+div.brace.left:before {
+  border-top: 3px solid;
+  border-top-left-radius: 10px;
+  margin-left: -20%;
+  margin-top: 7px;
+}
+
+div.brace.left:after {
+  border-bottom: 3px solid;
+  border-bottom-right-radius: 10px;
+  margin-left: 10%;
+  margin-top: -10px;
+}
+
+</style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="page-header">
+        <h1><a href="#">MeTA NLP Demo</a>
+            <!--<small></small>-->
+        </h1>
+      </div>
+    </div>
+    <div class="container-fluid" id="analyzerOutput">
+      <div class="tagged-text">
+        <ul>
+          <li>
+            <span class="tag">DT</span>
+            <ul>
+              <div class="curly-brace">
+                <div class="left brace"></div>
+                <div class="right brace"></div>
+              </div>
+              <li>The</li>
+            </ul>
+          </li>
+          <li>
+            <span class="tag">ORG</span>
+            <ul>
+              <div class="curly-brace">
+                <div class="left brace"></div>
+                <div class="right brace"></div>
+              </div>
+              <li>Chicago</li>
+              <li>Cubs</li>
+            </ul>
+          </li>
+          <li>
+            <span class="tag">VBD</span>
+            <ul>
+              <div class="curly-brace">
+                <div class="left brace"></div>
+                <div class="right brace"></div>
+              </div>
+              <li>won</li>
+            </ul>
+          </li>
+          <li>
+            <span class="tag">DT</span>
+            <ul>
+              <div class="curly-brace">
+                <div class="left brace"></div>
+                <div class="right brace"></div>
+              </div>
+              <li>the</li>
+            </ul>
+          </li>
+          <li>
+            <span class="tag">NNP</span>
+            <ul>
+              <div class="curly-brace">
+                <div class="left brace"></div>
+                <div class="right brace"></div>
+              </div>
+              <li>World</li>
+            </ul>
+          </li>
+          <li>
+            <span class="tag">NNP</span>
+            <ul>
+              <div class="curly-brace">
+                <div class="left brace"></div>
+                <div class="right brace"></div>
+              </div>
+              <li>Series</li>
+            </ul>
+          </li>
+          <li>
+            <span class="tag">.</span>
+            <ul>
+              <div class="curly-brace">
+                <div class="left brace"></div>
+                <div class="right brace"></div>
+              </div>
+              <li>.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">
+          Powered by <a href="https://meta-toolkit.org/">MeTA</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="javascript/bootstrap.min.js"></script>
+  <script src="javascript/dataTables.js"></script>
+  <script src="javascript/dataTablesBootstrap.js"></script>
+  <script src="javascript/index.js"></script>
+</html>
