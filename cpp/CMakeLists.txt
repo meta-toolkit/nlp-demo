@@ -99,8 +99,8 @@ find_package(Threads REQUIRED)
 add_library(jsoncpp src/jsoncpp.cpp)
 
 add_library(nlp-demo src/nlp_demo.cpp)
-target_link_libraries(nlp-demo cpptoml meta-util meta-analyzers
-	meta-language-model meta-crf jsoncpp ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(nlp-demo cpptoml meta-util meta-analyzers meta-parser
+    meta-language-model meta-greedy-tagger jsoncpp ${CMAKE_THREAD_LIBS_INIT})
 
 add_executable(api-server src/api_server.cpp)
 target_link_libraries(api-server nlp-demo cpptoml ${LIBEVENT}

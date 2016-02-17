@@ -10,50 +10,61 @@
 using namespace meta;
 
 nlp_demo::nlp_demo(const cpptoml::table& config)
-    : seq_analyzer_{meta::sequence::default_pos_analyzer()}
 {
-    auto crf_group = config.get_table("crf");
+    auto seq_group = config.get_table("sequence");
+    if (!seq_group)
+        throw std::runtime_error{"[sequence] group needed in config file"};
 
-    if (!crf_group)
-        throw std::runtime_error{"[crf] group needed in config file"};
+    auto tagger_prefix = seq_group->get_as<std::string>("prefix");
+    if (!tagger_prefix)
+        throw std::runtime_error{"[sequence] group needs a prefix key"};
 
-    auto prefix = crf_group->get_as<std::string>("prefix");
-    if (!prefix)
-        throw std::runtime_error{
-            "prefix to learned model needed in [crf] group"};
+    tagger_ = make_unique<meta::sequence::perceptron>(*tagger_prefix);
 
-    crf_ = make_unique<meta::sequence::crf>(*prefix);
-    seq_analyzer_.load(*prefix);
+    auto parser_group = config.get_table("parser");
+    if (!parser_group)
+        throw std::runtime_error{"[parser] group needed in config file"};
+
+    auto parser_prefix = parser_group->get_as<std::string>("prefix");
+    if (!parser_prefix)
+        throw std::runtime_error{"[parser] group needs a prefix key"};
+
+    parser_ = make_unique<meta::parser::sr_parser>(*parser_prefix);
 }
 
-std::string nlp_demo::analyze(const std::string& text)
+std::string nlp_demo::analyze(std::string text)
 {
     using namespace meta;
 
-    LOG(info) << "Analyzing text:" << ENDLG;
-    std::cout << text << std::endl;
+    LOG(info) << "Analyzing text" << ENDLG;
     auto start = std::chrono::high_resolution_clock::now();
+
+    std::unique_ptr<analyzers::token_stream> stream
+        = make_unique<analyzers::tokenizers::icu_tokenizer>();
+    stream = make_unique<analyzers::filters::ptb_normalizer>(std::move(stream));
+    stream->set_content(std::move(text));
 
     Json::Value result{Json::objectValue};
     result["sentences"] = Json::arrayValue;
+    meta::sequence::sequence seq;
 
-    const auto& analyzer = seq_analyzer_; // readonly
-    auto tagger = crf_->make_tagger();
-
-    auto sequences = extract_sequences(text);
-    for (auto& seq : sequences)
+    while (*stream)
     {
-        Json::Value obj{Json::objectValue};
-        std::string output{""};
-        analyzer.analyze(seq);
-        tagger.tag(seq);
-        for (const auto& obs : seq)
+        auto token = stream->next();
+        if (token == "<s>")
         {
-            output += std::string{obs.symbol()} + "_"
-                      + std::string{analyzer.tag(obs.label())} + " ";
+            seq = {};
         }
-        obj["sentence"] = output;
-        result["sentences"].append(obj);
+        else if (token == "</s>")
+        {
+            tagger_->tag(seq);
+            auto tree = parser_->parse(seq);
+            result["sentences"].append(json_sentence(seq, tree));
+        }
+        else
+        {
+            seq.add_symbol(sequence::symbol_t{token});
+        }
     }
 
     Json::StyledWriter styled_writer;
@@ -68,28 +79,23 @@ std::string nlp_demo::analyze(const std::string& text)
     return json_str;
 }
 
-std::vector<meta::sequence::sequence>
-nlp_demo::extract_sequences(std::string text) const
+Json::Value nlp_demo::json_sentence(const meta::sequence::sequence& seq,
+                                    const meta::parser::parse_tree& tree) const
 {
-    using namespace meta;
-
-    std::unique_ptr<analyzers::token_stream> stream
-        = make_unique<analyzers::tokenizers::icu_tokenizer>();
-    stream->set_content(std::move(text));
-
-    std::vector<sequence::sequence> sequences;
-    sequence::sequence seq;
-    while (*stream)
+    Json::Value obj{Json::objectValue};
+    std::string tokenized{""};
+    std::string tagged{""};
+    for (const auto& obs : seq)
     {
-        auto token = stream->next();
-        if (token == " " || token == "<s>")
-            continue;
-        else if (token == "</s>")
-            sequences.emplace_back(std::move(seq));
-        else
-            seq.add_observation(
-                {sequence::symbol_t{token}, sequence::tag_t{"[UNK]"}});
+        std::string word{obs.symbol()};
+        std::string tag{obs.tag()};
+        tokenized += word + " ";
+        tagged += word + "_" + tag + " ";
     }
-
-    return sequences;
+    obj["tokenized"] = tokenized;
+    obj["tagged"] = tagged;
+    std::stringstream ss;
+    ss << tree;
+    obj["tree"] = ss.str();
+    return obj;
 }

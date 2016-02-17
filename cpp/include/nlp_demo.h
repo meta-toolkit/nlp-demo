@@ -3,6 +3,9 @@
  * @author Sean Massung
  */
 
+#ifndef META_NLP_DEMO_H_
+#define META_NLP_DEMO_H_
+
 #include <iostream>
 #include <unordered_set>
 #include <unordered_map>
@@ -11,10 +14,17 @@
 #include "cpptoml.h"
 #include "meta/analyzers/analyzer.h"
 #include "meta/analyzers/tokenizers/icu_tokenizer.h"
-#include "meta/sequence/crf/crf.h"
-#include "meta/sequence/crf/tagger.h"
+#include "meta/analyzers/filters/all.h"
+#include "meta/parser/sr_parser.h"
+#include "meta/sequence/io/ptb_parser.h"
+#include "meta/sequence/perceptron.h"
 #include "meta/sequence/sequence.h"
 #include "meta/sequence/sequence_analyzer.h"
+
+namespace Json
+{
+class Value;
+}
 
 class nlp_demo
 {
@@ -28,12 +38,14 @@ class nlp_demo
     /**
      * @param text The text to run MeTA's NLP tools on
      */
-    std::string analyze(const std::string& text);
+    std::string analyze(std::string text);
 
   private:
-    std::vector<meta::sequence::sequence>
-    extract_sequences(std::string text) const;
+    Json::Value json_sentence(const meta::sequence::sequence& seq,
+                              const meta::parser::parse_tree& tree) const;
 
-    meta::sequence::sequence_analyzer seq_analyzer_;
-    std::unique_ptr<meta::sequence::crf> crf_;
+    std::unique_ptr<meta::sequence::perceptron> tagger_;
+    std::unique_ptr<meta::parser::sr_parser> parser_;
 };
+
+#endif

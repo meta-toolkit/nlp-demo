@@ -4,8 +4,8 @@ $ ->
     input = $("#inputText").val()
     if input.length == 0
       input = "Here is a sentence to analyze."
-    if input.length > (512 * 1024)
-      input = "Try using a smaller amount of text."
+##  if input.length > (512 * 1024)
+##    input = "Try using a smaller amount of text."
     $("#analyzerOutput").show()
     $.ajax "http://localhost:9001/meta-nlp-api",
       type: "POST"
@@ -20,6 +20,9 @@ printSentences = (result) ->
   totalSentences = 0
   for elem in result.sentences
     ++totalSentences
-    html = "<tr><td>#{totalSentences}</td><td>#{elem.sentence}</td></tr>"
+    html = "<tr><td>#{totalSentences}</td>";
+    html += "<td><p>#{elem.tokenized}</p>"
+    html += "<p>#{elem.tagged}</p>"
+    html += "<p>#{elem.tree}</p></td></tr>";
     $("#sentenceList tbody").append(html)
   window.DT = $("#sentenceList").DataTable({"bPaginate": false, "bInfo": false})
