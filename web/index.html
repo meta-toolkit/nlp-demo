@@ -9,6 +9,7 @@
     <link href="css/sticky-footer.css" rel="stylesheet">
     <link href="css/dataTables.css" rel="stylesheet">
     <link href="css/tree.css" rel="stylesheet">
+    <link href="css/tagged-text.css" rel="stylesheet">
   </head>
   <body>
     <div class="container-fluid">
@@ -48,9 +49,26 @@
     </footer>
   </body>
 
+  <script src="javascript/mustache.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="javascript/bootstrap.min.js"></script>
   <script src="javascript/dataTables.js"></script>
   <script src="javascript/dataTablesBootstrap.js"></script>
   <script src="javascript/index.js"></script>
+  <script id="tagged-text" type="x-tmpl-mustache">
+  <ul class="tagged-text clearfix">
+    {{#observations}}
+    <li class="chunk {{label}}">
+      <span class="tag">{{tag}}</span>
+      <div class="curly-brace">
+        <div class="left brace"></div>
+        <div class="right brace"></div>
+      </div>
+      <ul>
+        <li>{{word}}</li>
+      </ul>
+    </li>
+    {{/observations}}
+  </ul>
+  </script>
 </html>

@@ -85,16 +85,21 @@ Json::Value nlp_demo::json_sentence(const meta::sequence::sequence& seq,
 {
     Json::Value obj{Json::objectValue};
     std::string tokenized{""};
-    std::string tagged{""};
+
+    obj["tagged"] = Json::arrayValue;
     for (const auto& obs : seq)
     {
         std::string word{obs.symbol()};
         std::string tag{obs.tag()};
+
         tokenized += word + " ";
-        tagged += word + "_" + tag + " ";
+
+        Json::Value taggedword{Json::objectValue};
+        taggedword["word"] = word;
+        taggedword["tag"] = tag;
+        obj["tagged"].append(taggedword);
     }
     obj["tokenized"] = tokenized;
-    obj["tagged"] = tagged;
     meta::parser::html_tree_visitor visitor;
     tree.visit(visitor);
     obj["tree"] = visitor.html();
