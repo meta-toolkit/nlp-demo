@@ -1,10 +1,58 @@
-div.tagged-text ul {
+.tree {
+  .tagged-text ul {
+    padding: 0;
+    position: relative;
+    margin: 0;
+  }
+
+  .tagged-text > li {
+    float: left;
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 5px 0 5px;
+    min-width: 25px;
+    margin: 0;
+  }
+
+  .tagged-text li span.tag {
+    border-width: 1px;
+    border-style: solid;
+    padding: 2px 5px;
+    display: inline-block;
+    border-radius: 5px;
+    font-size: 11px;
+    color: #000;
+  }
+
+  li.tagged-text {
+    float: left;
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 5px 0 5px;
+    min-width: 25px;
+    margin: 0;
+  }
+
+  li.tagged-text span.tag {
+    border-width: 1px;
+    border-style: solid;
+    padding: 2px 5px;
+    display: inline-block;
+    border-radius: 5px;
+    font-size: 11px;
+    color: #000;
+  }
+}
+
+.tagged-text ul {
   padding: 0;
   position: relative;
   margin: 0;
 }
 
-div.tagged-text li {
+.tagged-text li {
   float: left;
   text-align: center;
   list-style-type: none;
@@ -14,26 +62,40 @@ div.tagged-text li {
   margin: 0 2px;
 }
 
-div.tagged-text li.chunk li {
+ul.tagged-text > li:before, ul.tagged-text > li:after {
+  display: block;
+}
+
+.tagged-text ul:before, .tagged-text ul:after, .tagged-text li:before,
+.tagged-text li:after {
+  display: none;
+}
+
+.tagged-text li.chunk li {
   margin: 2px 0;
   padding: 0 0 0 5px;
 }
 
-div.tagged-text li.chunk li:last-child {
+.tagged-text li.chunk li:last-child {
   padding: 0 5px;
 }
 
-div.tagged-text li.chunk li:only-child {
+.tagged-text li.chunk li:only-child {
   padding: 0 5px;
 }
 
-div.tagged-text li span.tag {
+.tagged-text li span.tag {
   border-width: 1px;
   border-style: solid;
   padding: 2px 5px;
   display: inline-block;
   border-radius: 5px;
   font-size: 11px;
+}
+
+div.curly-brace + ul li:only-child {
+  width: 100%;
+  margin-left: 0;
 }
 
 div.curly-brace {
@@ -94,38 +156,49 @@ $light-purple: #ccadf6;
 $yellow: #fffda8;
 $blue: #a4bced;
 $brown: #ffe8be;
-$green: #99f48b;
+$green: #adf6a2;
 $violet: #e4cbf6;
 
+@mixin label-hover($color) {
+  > span.tag {
+    background: darken($color, 10%);
+    border-color: darken(darken($color, 40%), 20%);
+  }
+  > div.curly-brace + ul li {
+    background: opacify(transparentize($color, 0.6), 0.2);
+  }
+  > div.curly-brace {
+    color: darken(darken($color, 40%), 5%);
+  }
+}
+
 @mixin label($color) {
-  span.tag {
+  > span.tag {
+    color: #000;
     background: $color;
     border-color: darken($color, 40%);
   }
-  li {
+  > div.curly-brace + ul li {
     background: transparentize($color, 0.6);
   }
-  div.curly-brace {
+  > div.curly-brace {
     color: darken($color, 40%);
   }
-  &:hover {
-    span.tag {
-      background: darken($color, 5%);
-      border-color: darken($color, 40%);
-    }
-    li {
-      background: opacify(transparentize($color, 0.6), 0.2);
-    }
-    div.curly-brace {
-      color: darken(darken($color, 40%), 5%);
-    }
+  ul.tagged-text &:hover, &.tagged-text:hover {
+    @include label-hover($color);
+  }
+  & > span.tag:hover {
+    background: darken($color, 5%);
+    border-color: darken(darken($color, 40%), 20%);
   }
 }
 
 /*
- * Coordination and Punctuation
+ * Coordination and Punctuation, Clauses
  */
-.label_CC, .label_PUNCT {
+.label_CC, .label_PUNCT, .label_S, .label_SBAR, .label_SBARQ, .label_SINV,
+.label_SQ, .label_FRAG, .label_LST, .label_PRN, .label_RRC, .label_UCP,
+.label_X {
   @include label($light-grey);
 }
 
@@ -133,7 +206,7 @@ $violet: #e4cbf6;
  * Adjectives and adverbs
  */
 .label_JJ, .label_JJR, .label_JJS, .label_RB, .label_RBR, .label_RBS,
-.label_WRB {
+.label_WRB, .label_ADJP, .label_ADVP, .label_WHADJP, .label_WHADVP {
   @include label($yellow);
 }
 
@@ -146,16 +219,17 @@ $violet: #e4cbf6;
 }
 
 /*
- * Nouns
+ * Nouns, noun phrases
  */
-.label_NN, .label_NNP, .label_NNPS, .label_NNS {
+.label_NN, .label_NNP, .label_NNPS, .label_NNS, .label_NP, .label_NX,
+.label_QP, .label_WHNP {
   @include label($blue);
 }
 
 /*
- * Prepositions
+ * Prepositions, conjunctions
  */
-.label_IN, .label_TO {
+.label_IN, .label_TO, .label_CONJP, .label_PP, .label_WHPP {
   @include label($brown);
 }
 
@@ -163,7 +237,7 @@ $violet: #e4cbf6;
  * Verbs
  */
 .label_MD, .label_VB, .label_VBD, .label_VBG, .label_VBN, .label_VBP,
-.label_VBZ {
+.label_VBZ, .label_VP {
   @include label($green);
 }
 
@@ -171,7 +245,63 @@ $violet: #e4cbf6;
  * Miscellaneous
  */
 .label_EX, .label_FW, .label_LS, .label_POS, .label_RP, .label_SYM,
-.label_UH, .label_DOLLAR
+.label_UH, .label_DOLLARi, .label_INTJ, .label_PRT
 {
   @include label($violet);
+}
+
+.tree li span:hover + ul{
+  /*
+   * Coordination and Punctuation
+   */
+  .label_CC, .label_PUNCT {
+    @include label-hover($light-grey);
+  }
+
+  /*
+   * Adjectives and adverbs
+   */
+  .label_JJ, .label_JJR, .label_JJS, .label_RB, .label_RBR, .label_RBS,
+  .label_WRB {
+    @include label-hover($yellow);
+  }
+
+  /*
+   * Determiners, numbers, pronouns
+   */
+  .label_DT, .label_PDT, .label_WDT, .label_CD, .label_PRP, .label_PRPDOLLAR,
+  .label_WP, .label_WPDOLLAR {
+    @include label-hover($light-purple);
+  }
+
+  /*
+   * Nouns
+   */
+  .label_NN, .label_NNP, .label_NNPS, .label_NNS {
+    @include label-hover($blue);
+  }
+
+  /*
+   * Prepositions
+   */
+  .label_IN, .label_TO {
+    @include label-hover($brown);
+  }
+
+  /*
+   * Verbs
+   */
+  .label_MD, .label_VB, .label_VBD, .label_VBG, .label_VBN, .label_VBP,
+  .label_VBZ {
+    @include label-hover($green);
+  }
+
+  /*
+   * Miscellaneous
+   */
+  .label_EX, .label_FW, .label_LS, .label_POS, .label_RP, .label_SYM,
+  .label_UH, .label_DOLLAR
+  {
+    @include label-hover($violet);
+  }
 }
