@@ -245,7 +245,7 @@ $violet: #e4cbf6;
  * Miscellaneous
  */
 .label_EX, .label_FW, .label_LS, .label_POS, .label_RP, .label_SYM,
-.label_UH, .label_DOLLARi, .label_INTJ, .label_PRT
+.label_UH, .label_DOLLAR, .label_INTJ, .label_PRT
 {
   @include label($violet);
 }
