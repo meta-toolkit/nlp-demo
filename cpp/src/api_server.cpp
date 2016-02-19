@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
         };
 
         std::exception_ptr init_except;
-        volatile bool running = true;
+        std::atomic<bool> running{true};
         evutil_socket_t socket = -1;
         auto thread_fun = [&]()
         {
