@@ -12,7 +12,7 @@ if [ $? -ne 0 ]; then
 fi
 
 cp web/javascript/index.js /srv/www/timan103/html/nlp-demo/javascript/
-cp web/css/tagged-text.css /srv/www/timan103/nlp-demo/css/
+cp web/css/tagged-text.css /srv/www/timan103/html/nlp-demo/css/
 cp web/index.html /srv/www/timan103/html/nlp-demo/
 
 echo "Success! Don't forget to restart the API server if necessary."
