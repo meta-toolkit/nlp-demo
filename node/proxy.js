@@ -8,7 +8,7 @@ require('http').createServer(function(req, res) {
   var proto = 'http';
   if(re.test(req.url)) {
     var newUrl = req.url.replace("meta-nlp-api", "")
-    target = 'http://0.0.0.0:8088' + newUrl;
+    target = 'http://0.0.0.0:8098' + newUrl;
     proto = 'text';
   } else {
     // target += req.url;

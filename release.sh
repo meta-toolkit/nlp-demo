@@ -7,17 +7,12 @@ fi
 
 make -C web/
 if [ $? -ne 0 ]; then
-  echo "Compiling coffeescript failed!"
+  echo "Compiling coffeescript/sass failed!"
   return 1
 fi
 
-cp web/javascript/index.js /srv/www/timan103/html/meta-nlp-demo/javascript/
-cp web/index.html /srv/www/timan103/html/meta-nlp-demo/
-
-sed -i 's/0.0.0.0:9001/timan103.cs.illinois.edu/' /srv/www/timan103/html/meta-nlp-demo/javascript/index.js
-if [ $? -ne 0 ]; then
-  echo "Replacing API URL failed!"
-  return 1
-fi
+cp web/javascript/index.js /srv/www/timan103/html/nlp-demo/javascript/
+cp web/css/tagged-text.css /srv/www/timan103/nlp-demo/css/
+cp web/index.html /srv/www/timan103/html/nlp-demo/
 
 echo "Success! Don't forget to restart the API server if necessary."

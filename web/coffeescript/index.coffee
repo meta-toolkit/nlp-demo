@@ -7,10 +7,10 @@ $ ->
     input = $("#inputText").val()
     if input.length == 0
       input = "Here is a sentence to analyze."
-##  if input.length > (512 * 1024)
-##    input = "Try using a smaller amount of text."
+    if input.length > (512 * 1024) # about 512 KB
+      input = "Try using a smaller amount of text."
     $("#analyzerOutput").show()
-    $.ajax "http://localhost:9001/meta-nlp-api",
+    $.ajax "/meta-nlp-api",
       type: "POST"
       dataType: "text"
       data: input
