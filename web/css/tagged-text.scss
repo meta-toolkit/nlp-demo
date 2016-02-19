@@ -5,7 +5,7 @@
     margin: 0;
   }
 
-  .tagged-text > li {
+  .tagged-text > li, li.tagged-text {
     float: left;
     text-align: center;
     list-style-type: none;
@@ -15,34 +15,18 @@
     margin: 0;
   }
 
-  .tagged-text li span.tag {
+  .tagged-text li span.tag, li.tagged-text span.tag {
     border-width: 1px;
     border-style: solid;
-    padding: 2px 5px;
+    padding: 5px 5px;
     display: inline-block;
     border-radius: 5px;
     font-size: 11px;
     color: #000;
   }
 
-  li.tagged-text {
-    float: left;
-    text-align: center;
-    list-style-type: none;
-    position: relative;
-    padding: 20px 5px 0 5px;
-    min-width: 25px;
-    margin: 0;
-  }
-
-  li.tagged-text span.tag {
-    border-width: 1px;
-    border-style: solid;
-    padding: 2px 5px;
-    display: inline-block;
-    border-radius: 5px;
-    font-size: 11px;
-    color: #000;
+  .tagged-text > li:only-child, li.tagged-text:only-child {
+    padding: 0 5px;
   }
 }
 
@@ -198,7 +182,7 @@ $violet: #e4cbf6;
  */
 .label_CC, .label_PUNCT, .label_S, .label_SBAR, .label_SBARQ, .label_SINV,
 .label_SQ, .label_FRAG, .label_LST, .label_PRN, .label_RRC, .label_UCP,
-.label_X {
+.label_X, .label_ROOT {
   @include label($light-grey);
 }
 
@@ -250,20 +234,22 @@ $violet: #e4cbf6;
   @include label($violet);
 }
 
-.tree li span:hover + ul{
+.tree li span:hover + ul {
   /*
-   * Coordination and Punctuation
+   * Coordination and Punctuation, Clauses
    */
-  .label_CC, .label_PUNCT {
-    @include label-hover($light-grey);
+  .label_CC, .label_PUNCT, .label_S, .label_SBAR, .label_SBARQ, .label_SINV,
+  .label_SQ, .label_FRAG, .label_LST, .label_PRN, .label_RRC, .label_UCP,
+  .label_X, .label_ROOT {
+    @include label_hover($light-grey);
   }
 
   /*
    * Adjectives and adverbs
    */
   .label_JJ, .label_JJR, .label_JJS, .label_RB, .label_RBR, .label_RBS,
-  .label_WRB {
-    @include label-hover($yellow);
+  .label_WRB, .label_ADJP, .label_ADVP, .label_WHADJP, .label_WHADVP {
+    @include label_hover($yellow);
   }
 
   /*
@@ -271,37 +257,38 @@ $violet: #e4cbf6;
    */
   .label_DT, .label_PDT, .label_WDT, .label_CD, .label_PRP, .label_PRPDOLLAR,
   .label_WP, .label_WPDOLLAR {
-    @include label-hover($light-purple);
+    @include label_hover($light-purple);
   }
 
   /*
-   * Nouns
+   * Nouns, noun phrases
    */
-  .label_NN, .label_NNP, .label_NNPS, .label_NNS {
-    @include label-hover($blue);
+  .label_NN, .label_NNP, .label_NNPS, .label_NNS, .label_NP, .label_NX,
+  .label_QP, .label_WHNP {
+    @include label_hover($blue);
   }
 
   /*
-   * Prepositions
+   * Prepositions, conjunctions
    */
-  .label_IN, .label_TO {
-    @include label-hover($brown);
+  .label_IN, .label_TO, .label_CONJP, .label_PP, .label_WHPP {
+    @include label_hover($brown);
   }
 
   /*
    * Verbs
    */
   .label_MD, .label_VB, .label_VBD, .label_VBG, .label_VBN, .label_VBP,
-  .label_VBZ {
-    @include label-hover($green);
+  .label_VBZ, .label_VP {
+    @include label_hover($green);
   }
 
   /*
    * Miscellaneous
    */
   .label_EX, .label_FW, .label_LS, .label_POS, .label_RP, .label_SYM,
-  .label_UH, .label_DOLLAR
+  .label_UH, .label_DOLLAR, .label_INTJ, .label_PRT
   {
-    @include label-hover($violet);
+    @include label_hover($violet);
   }
 }

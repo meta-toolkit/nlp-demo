@@ -7,6 +7,7 @@
 #include "meta/util/shim.h"
 #include "nlp_demo.h"
 #include "html_tree_visitor.h"
+#include "json_tree_visitor.h"
 
 using namespace meta;
 
@@ -103,5 +104,7 @@ Json::Value nlp_demo::json_sentence(const meta::sequence::sequence& seq,
     meta::parser::html_tree_visitor visitor;
     tree.visit(visitor);
     obj["tree"] = visitor.html();
+    meta::parser::json_tree_visitor jsonvisitor;
+    obj["json-tree"] = tree.visit(jsonvisitor);
     return obj;
 }

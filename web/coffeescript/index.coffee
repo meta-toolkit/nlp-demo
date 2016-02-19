@@ -1,4 +1,7 @@
 $ ->
+  Handlebars.registerPartial 'observation', $('#observation').html()
+  Handlebars.registerPartial 'treenode', $('#treenode').html()
+
   $("#analyzerOutput").hide()
   $("#analyzeButton").click ->
     input = $("#inputText").val()
@@ -14,20 +17,29 @@ $ ->
       success: (data, stat, xhr) -> printSentences JSON.parse(data)
       failure: (axhr, stat, err) -> console.log "Failed!"
 
-parseTree = (tree) -> tree
-
 tagToLabel = (tag) ->
-  "label_#{tag.replace("$", "DOLLAR").replace(/[.,]/, "PUNCT")}"
+  "label_#{tag.replace("$", "DOLLAR").replace(/[.:,]/, "PUNCT")}"
+
+addLabels = (tree) ->
+  tree.label = tagToLabel tree.tag
+  if tree.children
+    tree.children = tree.children.map addLabels
+  tree
+
+parseTree = (tree) ->
+  template = Handlebars.compile $('#parse-tree').html()
+
+  tree = addLabels tree
+  template tree
 
 taggedText = (observations) ->
-  template = $('#tagged-text').html()
-  Mustache.parse template
+  template = Handlebars.compile $('#tagged-text').html()
 
   observations = observations.map (elem) ->
     elem['label'] = tagToLabel(elem['tag'])
     return elem
 
-  Mustache.render template, {'observations': observations}
+  template {'observations': observations}
 
 printSentences = (result) ->
   window.DT.destroy() if window.DT isnt undefined # clear old data
@@ -38,6 +50,6 @@ printSentences = (result) ->
     html = "<tr><td>#{totalSentences}</td>"
     html += "<td><p>#{elem.tokenized}</p>"
     html += "<p>#{taggedText(elem.tagged)}</p>"
-    html += "<p>#{parseTree(elem.tree)}</p></td></tr>"
+    html += "<p>#{parseTree(elem['json-tree'])}</p></td></tr>"
     $("#sentenceList tbody").append(html)
   window.DT = $("#sentenceList").DataTable({"bPaginate": false, "bInfo": false})
