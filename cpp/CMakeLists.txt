@@ -5,7 +5,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 include(CTest)
 include(CheckCXXCompilerFlag)
-include_directories(include meta/include /usr/include /usr/local/include)
+include_directories(include meta/include simple-http-server/include /usr/include
+    /usr/local/include)
 
 option(USE_LIBCXX "Use libc++ for the C++ standard library" OFF)
 
@@ -102,6 +103,9 @@ add_library(nlp-demo src/nlp_demo.cpp)
 target_link_libraries(nlp-demo cpptoml meta-util meta-analyzers meta-parser
     meta-language-model meta-greedy-tagger jsoncpp ${CMAKE_THREAD_LIBS_INIT})
 
-add_executable(api-server src/api_server.cpp src/simple_http_server.cpp)
-target_link_libraries(api-server nlp-demo cpptoml ${LIBEVENT}
+add_library(simple-http-server simple-http-server/src/simple_http_server.cpp)
+target_link_libraries(simple-http-server ${LIBEVENT} ${CMAKE_THREAD_LIBS_INIT})
+
+add_executable(api-server src/api_server.cpp)
+target_link_libraries(api-server simple-http-server nlp-demo cpptoml ${LIBEVENT}
     ${CMAKE_THREAD_LIBS_INIT})
